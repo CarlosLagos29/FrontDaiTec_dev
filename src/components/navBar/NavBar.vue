@@ -42,4 +42,8 @@
             </button>
         </RouterLink>
     </nav>
+    <div class=" flex justify-center gap-1">
+        <input type="text" >
+        <button>buscar</button>
+    </div>
 </template>

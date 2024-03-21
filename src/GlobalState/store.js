@@ -20,7 +20,6 @@ const store = createStore({
     async getAllProducts({commit}){
       try {
         const response = await axios.get(`${BASE_URL}products/`);
-        console.log(response.data)
         commit('setAllProducts', response.data)
     } catch (error) {
         console.error(error);
@@ -29,7 +28,6 @@ const store = createStore({
     async getProfecionals({commit}){
       try {
         const response = await axios.get(`${BASE_URL}users/profecionals/`);
-        console.log(response.data)
         commit('setProfecionals', response.data)
     } catch (error) {
         console.error(error);

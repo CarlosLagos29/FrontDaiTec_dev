@@ -5,6 +5,7 @@ import SuperAdmin from '@/components/SuperAdmin/SuperAdmin.vue'
 import Products from '@/components/Products/Products.vue'
 import Services from '@/components/Services/Services.vue'
 import Profecionals from '@/components/Profecionals/Profecionals.vue'
+import Detailproduct from '@/components/Products/Detailproduct.vue'
 
 
 const router = createRouter({
@@ -30,6 +31,12 @@ const router = createRouter({
       name: 'productos',
       component: Products
     },
+    {
+      path: '/productos/:source/:id',
+      name: 'Detalle de productos',
+      component: Detailproduct
+    },
+
     {
       path: '/servicios',
       name: 'servicios',

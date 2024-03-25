@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 const props = defineProps({
     product: Object
 })
@@ -11,13 +12,16 @@ const selectcolor = (color) => {
     currentColor.value = color
 }
 
+
 </script>
 
 <template>
-    <div class=" border-pink-300  border-4 m-4 flex flex-col p-3">
-        <section>
-            <img class=" size-64" :src="product.img[0]" :alt="product.name">
-        </section>
+    <div class=" border-pink-300 rounded-lg border-4 m-4 flex flex-col p-3">
+        <RouterLink :to="`/productos/${product.source}/${product._id}`">
+            <section>
+                <img class=" size-64 rounded-lg " :src="product.img[0]" :alt="product.name">
+            </section>
+        </RouterLink>
         <section>
             <h1 class=" text-xl font-bold">{{ product.name }}</h1>
 
@@ -27,7 +31,7 @@ const selectcolor = (color) => {
                     <del class=" text-slate-300">${{ product.price }}</del>
                 </span>
                 <span v-if="product.discount && product.discount.percent" class=" ml-0.5 text-green-300">
-                    ${{ (product.price - (product.price * (product.discount.percent / 100))).toFixed(2)}}
+                    ${{ (product.price - (product.price * (product.discount.percent / 100))).toFixed(2) }}
                 </span>
                 <span v-else>
                     ${{ product.price }}

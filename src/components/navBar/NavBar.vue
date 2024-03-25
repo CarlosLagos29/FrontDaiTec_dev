@@ -2,7 +2,7 @@
     import { RouterLink } from 'vue-router';
     import { onMounted, ref } from 'vue';
 
-    const currentPage = ref("");
+    const currentPage = ref("Inicio");
 
     onMounted(()=>{
         currentPage.value = localStorage.getItem('currentPage') || 'Inicio'

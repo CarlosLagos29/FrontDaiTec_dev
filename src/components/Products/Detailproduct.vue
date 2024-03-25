@@ -15,18 +15,18 @@ const selectcolor = (color) => {
     currentColor.value = color
 }
 
-const nextImage = ()=>{
-    if(curentImage.value === product.value.img.length - 1){
-      return  curentImage.value = 0
+const nextImage = () => {
+    if (curentImage.value === product.value.img.length - 1) {
+        return curentImage.value = 0
     }
-    curentImage.value ++
+    curentImage.value++
 }
 
-const previusImage = ()=>{
-    if(curentImage.value === 0){
-      return  curentImage.value = product.value.img.length - 1
+const previusImage = () => {
+    if (curentImage.value === 0) {
+        return curentImage.value = product.value.img.length - 1
     }
-    return curentImage.value --
+    return curentImage.value--
 }
 
 onMounted(async () => {
@@ -44,7 +44,7 @@ onMounted(async () => {
 const startAutoChange = () => {
     setInterval(() => {
         nextImage();
-    }, 10000); 
+    }, 10000);
 }
 
 </script>
@@ -52,12 +52,13 @@ const startAutoChange = () => {
 <template>
     <div class=" flex items items-center">
         <section class="size-96 flex items-center">
-            <button @click="previusImage" class="rounded-full"><</button>
-            <transition name=" slice-fade" >
-            <img class=" size-96 rounded-lg transition-opacity duration-500 " :src="product.img && product.img.length > 0 ? product.img[curentImage] : ''" :alt="product.name">
-            </transition>
+            <button @click="previusImage" class="rounded-full"> < </button>
+                <transition name=" slice-fade">
+                    <img class=" size-96 rounded-lg transition-opacity duration-500 "
+                        :src="product.img && product.img.length > 0 ? product.img[curentImage] : ''"
+                        :alt="product.name">
+                </transition>
             <button @click="nextImage" class="rounded-full">></button>
-            
         </section>
         <section class=" flex flex-col justify-center">
             <h1 class=" text-xl font-bold">{{ product.name }}</h1>

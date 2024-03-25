@@ -5,6 +5,7 @@ export const BASE_URL = 'http://localhost:3001/'
 
 const store = createStore({
   state:{
+    currentDashboard: 'Productos Gennerales',
     allProducts: [],
     profecionals: [],
   },
@@ -14,6 +15,9 @@ const store = createStore({
     },
     setProfecionals(state, payload){
       state.profecionals = payload
+    },
+    setDashboard(state,payload){
+      state.currentDashboard = payload
     }
   },
   actions: {
@@ -32,7 +36,7 @@ const store = createStore({
     } catch (error) {
         console.error(error);
     }
-    }
+    },
   },
   getters: {
   }

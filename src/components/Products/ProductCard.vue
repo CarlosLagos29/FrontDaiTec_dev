@@ -38,8 +38,8 @@ const selectcolor = (color) => {
                 </span>
             </h1>
 
-            <h1 class=" text-xl font-bold" v-if="product.crema">Tipo de crema: {{ product.crema  }}</h1>
-            <h1 class=" text-xl font-bold" v-if="product.skinType">Tipo de piel: {{ product.skinType  }}</h1>
+            <h1 class=" text-xl font-bold" v-if="product.crema">Tipo de crema: {{ product.crema }}</h1>
+            <h1 class=" text-xl font-bold" v-if="product.skinType">Tipo de piel: {{ product.skinType }}</h1>
 
             <div v-if="product.colors" class="flex flex-col gap-1">
                 <h1 class=" text-xl font-bold">Colores disponibles: </h1>
@@ -55,12 +55,12 @@ const selectcolor = (color) => {
             </div>
 
             <div class="flex gap-2 mt-1 items-center">
-                <button class=" border-2 bg-pink-300 px-2 rounded-full" 
-                :class="{ 'disabled text-gray-400': product.available === 0 }">
+                <button class=" border-2 bg-pink-300 px-2 rounded-full"
+                    :class="{ 'disabled text-gray-400': product.available === 0 }">
                     Agregar
                 </button>
-                <h1 v-if=" product.available === 0 " class=" text-red-500">No disponible</h1>
-            </div >
+                <h1 v-if="product.available === 0" class=" text-red-500">No disponible</h1>
+            </div>
         </section>
     </div>
 </template>

@@ -6,7 +6,6 @@ import SearchBar from './components/navBar/SearchBar.vue'
 
 const route = useRoute();
     const superAdmin = computed(() =>{
-        console.log(route.fullPath);
         return route.path == '/superAdmin'
 
     })

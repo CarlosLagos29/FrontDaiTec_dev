@@ -14,11 +14,12 @@ const store = useStore()
 
 
 <template>
-    <div class="flex items-center">
-        <nav class=" flex justify-start border border-slate-400 p-2 rounded-3xl mr-3">
+    <div class="flex mx-3 gap-6">
+        <nav class="  border border-slate-400 p-1 rounded-3xl max-h-[444px]">
             <navBarSuperAdmin />
         </nav>
         <section>
+
             <Generals v-if="store.state.currentDashboard  === 'Productos Gennerales'"/>
             <MakeUps v-if="store.state.currentDashboard  === 'MakeUps'"/>
             <Oferts v-if="store.state.currentDashboard  === 'Ofertas'"/>

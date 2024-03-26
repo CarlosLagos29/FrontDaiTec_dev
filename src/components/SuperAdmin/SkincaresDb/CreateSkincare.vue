@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 import { BASE_URL } from '@/GlobalState/store';
 const skincare = ref({
@@ -10,12 +10,16 @@ const skincare = ref({
     price: 0,
     available: 0,
     crema: "",
-    discount: null
+    discount: 0, 
 });
 
 const currentImage = ref("");
 
 const isDiscount = ref(false);
+
+const discountedPrice = computed(() => {
+      return skincare.value.price - (skincare.value.price * (skincare.value.discount / 100)).toFixed(2);
+    });
 
 const handlerChange = (event) => {
     event.preventDefault();
@@ -45,24 +49,11 @@ const deleteImage = (event) => {
 const discount = (event) =>{
     event.preventDefault()
     if(isDiscount){
-        delete skincare.value.discount
-    }
-    if(skincare.value.discount){
-        console.log(skincare.value.discount)
-    }
-    else{
-        console.log("no existe")
+        skincare.value.discount = 0
     }
     isDiscount.value = !isDiscount.value
 }
 
-const setDiscount = (event) => {
-    event.preventDefault();
-    skincare.value.discount = {
-        ofert: true,
-        percent: event.target.value
-    }
-}
 
 const submit = async (event) => {
     try {
@@ -113,7 +104,8 @@ const submit = async (event) => {
         <section v-if="isDiscount">
             <label> Descuento </label>
             <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="discount"
-            v-model="skincare.discount" @change="setDiscount" @keydown.enter.prevent>
+            v-model="skincare.discount" @change="handlerChange" @keydown.enter.prevent>
+            <label> Precio con descuento: {{ discountedPrice }}</label>
         </section>
 
         <label>Disponibilidad</label>

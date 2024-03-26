@@ -51,6 +51,7 @@ const startAutoChange = () => {
 
 <template>
     <div class=" flex items items-center">
+
         <section class="size-96 flex items-center">
             <button @click="previusImage" class="rounded-full"> < </button>
                 <transition name=" slice-fade">
@@ -60,16 +61,18 @@ const startAutoChange = () => {
                 </transition>
             <button @click="nextImage" class="rounded-full">></button>
         </section>
+
         <section class=" flex flex-col justify-center">
             <h1 class=" text-xl font-bold">{{ product.name }}</h1>
             <h1>{{ product.description }}</h1>
+
             <h1 class="text-xl font-bold">
                 Precio:
-                <span v-if="product.discount && product.discount.percent">
+                <span v-if="product.discount != 0">
                     <del class=" text-slate-300">${{ product.price }}</del>
                 </span>
-                <span v-if="product.discount && product.discount.percent" class=" ml-0.5 text-green-300">
-                    ${{ (product.price - (product.price * (product.discount.percent / 100))).toFixed(2) }}
+                <span v-if="product.discount != 0" class=" ml-0.5 text-green-300">
+                    ${{ (product.price - (product.price * (product.discount / 100))).toFixed(2) }}
                 </span>
                 <span v-else>
                     ${{ product.price }}

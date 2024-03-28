@@ -8,6 +8,10 @@ const store = createStore({
     currentDashboard: 'Productos Gennerales',
     allProducts: [],
     profecionals: [],
+    adminView:[],
+    isEditing: false,
+    edit: {},
+
   },
   mutations: {
     setAllProducts(state, payload){
@@ -18,7 +22,13 @@ const store = createStore({
     },
     setDashboard(state,payload){
       state.currentDashboard = payload
-    }
+    },
+    setAdminView(state,payload){
+      state.adminView = payload
+    },
+    setIsEditing(state, payload){
+      state.isEditing = payload
+    },
   },
   actions: {
     async getAllProducts({commit}){
@@ -36,6 +46,17 @@ const store = createStore({
     } catch (error) {
         console.error(error);
     }
+    },
+    async getAdminview({commit},path){
+      try {
+        const {data} = await axios.get(path)
+        commit('setAdminView',data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    changeIsediting ({commit, state}){
+      commit('setIsEditing', !state.isEditing);
     },
   },
   getters: {

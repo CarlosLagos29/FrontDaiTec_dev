@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import axios from 'axios';
 import { BASE_URL } from '@/GlobalState/store';
 const skincare = ref({
@@ -13,6 +14,7 @@ const skincare = ref({
     discount: 0, 
 });
 
+const store = useStore();
 const currentImage = ref("");
 
 const isDiscount = ref(false);
@@ -27,7 +29,6 @@ const handlerChange = (event) => {
     const valor = event.target.value;
 
     skincare.value[name] = valor
-    console.log(skincare.value[name]);
 }
 
 const handlerImage = (event) => {
@@ -66,8 +67,10 @@ const submit = async (event) => {
             skinType: "",
             price: 0,
             available: 0,
-            crema: ""
+            crema: "",
         }
+        const path = `${BASE_URL}products/skincares/`
+        await store.dispatch('getAdminview',path)
     } catch (error) {
         console.error(error)
     }
@@ -117,9 +120,9 @@ const submit = async (event) => {
             v-model="skincare.description" @change="handlerChange" cols="200" rows="10"></textarea>
 
         <label>Imagenes</label>
-        <input class=" border border-slate-400 px-2 py-1  rounded-2xl " type="text" name="img" v-model="currentImage"
-            @keyup.enter="setImage" @change="handlerImage" @keydown.enter.prevent >
-        <button class="border rounded-full px-2 border-slate-400" @click="setImage"> Agregar imagen </button>
+            <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="img" v-model="currentImage"
+                @keyup.enter="setImage" @change="handlerImage" @keydown.enter.prevent >
+            <button class="border rounded-full px-2 border-slate-400" @click="setImage"> Agregar imagen </button>
         <section class=" flex flex-row gap-2 max-w-screen-2xl overflow-scroll">
             <ul class="flex flex-col border border-slate-400 rounded-2xl p-2" v-for="(image, index) in skincare.img ">
                 <button class=" text-red-500 border rounded-full px-2" :value="image" @click="deleteImage"> X </button>

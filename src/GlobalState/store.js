@@ -9,7 +9,6 @@ const store = createStore({
     allProducts: [],
     profecionals: [],
     adminView:[],
-    isEditing: false,
     edit: {},
 
   },
@@ -26,9 +25,12 @@ const store = createStore({
     setAdminView(state,payload){
       state.adminView = payload
     },
-    setIsEditing(state, payload){
-      state.isEditing = payload
+    setEdit(state,payload){
+      state.edit = payload
     },
+    resetEdit(state) {
+      state.edit = {};
+    }
   },
   actions: {
     async getAllProducts({commit}){
@@ -49,15 +51,23 @@ const store = createStore({
     },
     async getAdminview({commit},path){
       try {
-        const {data} = await axios.get(path)
+        const { data } = await axios.get(path)
         commit('setAdminView',data)
       } catch (error) {
         console.error(error);
       }
     },
-    changeIsediting ({commit, state}){
-      commit('setIsEditing', !state.isEditing);
+    async getEdit({commit},path){
+      try {
+        const{ data } = await axios.get(path);
+        commit('setEdit', data)
+      } catch (error) {
+        console.error(error)
+      }
     },
+    setResetEdit({commit}){
+      commit('resetEdit')
+    }
   },
   getters: {
   }

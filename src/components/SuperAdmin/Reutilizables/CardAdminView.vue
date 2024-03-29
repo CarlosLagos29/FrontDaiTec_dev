@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 import { useStore } from 'vuex';
 import axios from 'axios';
 
@@ -9,13 +9,22 @@ const props = defineProps({
     path: String,
 })
 
-const fullpath = `${props.path}${props.product._id}`;
 const store = useStore()
 
 const deleteCard = async () => {
     try {
+        const fullpath = `${props.path}${props.product._id}`;
         await axios.delete(fullpath);
         await store.dispatch('getAdminview', props.path)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const editCard = async () => {
+    try {
+        const fullpath = `${props.path}${props.product._id}`;
+        await store.dispatch('getEdit', fullpath);
     } catch (error) {
         console.error(error)
     }
@@ -30,6 +39,7 @@ const deleteCard = async () => {
             </section>
         </RouterLink>
         <section>
+            <h1>{{ product._id }}</h1>
             <h1 class=" text-xl font-bold">{{ product.name }}</h1>
 
             <h1 class="text-xl font-bold">
@@ -61,7 +71,7 @@ const deleteCard = async () => {
             </div>
 
             <div class="flex gap-2 mt-1 items-center justify-center">
-                <button class="border-2 bg-green-500 px-2 rounded-full">Editar</button>
+                <button class="border-2 bg-green-500 px-2 rounded-full" @click="editCard">Editar</button>
                 <button class="border-2 bg-red-600 px-2 rounded-full" @click="deleteCard">Eliminar</button>
             </div>
         </section>

@@ -3,13 +3,11 @@
     import CreateSkincare from "./CreateSkincare.vue"
     import { ref } from "vue";
     import { useStore } from 'vuex';
+    import EditSkincare from "./EditSkincare.vue"
 
+    const store = useStore()
     const create = ref(false);
 
-    const store = useStore();
-    const test = ()=>{
-        store.dispatch('changeIsediting')
-    }
     const handlercreate = () =>{
         create.value = !create.value
     }
@@ -21,8 +19,7 @@
             <span v-if="!create"> + Añadir producto </span> 
             <span v-else> x </span>
          </button>
-        <h1>{{ store.state.isEditing }}</h1>
-        <button @click="test">click</button>
+        <EditSkincare  v-if=" store.state.edit?.source && store.state.edit?.source === 'skincares'"/>
         <CreateSkincare v-show="create"/>
         <AdminView :route="'products/skincares/'" />
     </div>

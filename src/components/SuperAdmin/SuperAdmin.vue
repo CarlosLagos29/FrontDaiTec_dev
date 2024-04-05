@@ -7,9 +7,12 @@ import Services from "./Services/Services.vue";
 import SkinCaresDb from "./SkincaresDb/SkinCaresDb.vue";
 import ProfecionalsDb from "./ProfecionalsDb/ProfecionalsDb.vue";
 import Turns from "./Turns/Turns.vue"
+
 import { useStore } from "vuex";
 
-const store = useStore()
+const store = useStore();
+
+
 </script>
 
 

@@ -2,7 +2,7 @@
 // import { RouterLink } from 'vue-router';
 import { useStore } from 'vuex';
 
-const store = useStore()    
+const store = useStore();
 
 const changeSection = (page) => {
     store.commit('setDashboard',page)
@@ -46,7 +46,7 @@ const changeSection = (page) => {
 
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
             :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Profecionales' }" @click="changeSection('Profecionales')">
-            Profecionales
+            Profesionales
         </button>
     </nav>
 </template>

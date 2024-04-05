@@ -17,7 +17,7 @@ onMounted(
 </script>
 
 <template>
-    <div class=" flex flex-wrap items-center justify-center ">
+    <div class=" flex flex-wrap justify-center ">
         <ProductCard v-for="(product, index) in store.state.allProducts" :key="index" :product="product" />
     </div>
 </template>

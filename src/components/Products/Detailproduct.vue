@@ -82,22 +82,24 @@ const startAutoChange = () => {
             <h1 class=" text-xl font-bold" v-if="product.crema">Tipo de crema: {{ product.crema }}</h1>
             <h1 class=" text-xl font-bold" v-if="product.skinType">Tipo de piel: {{ product.skinType }}</h1>
 
-            <div v-if="product.colors" class="flex flex-col gap-1">
+            <div v-if="product.colors && product.colors.length " class="flex flex-col gap-1">
                 <h1 class=" text-xl font-bold">Colores disponibles: </h1>
                 <ul class=" flex gap-1 flex-wrap">
                     <li v-for="(color, index) in product.colors" :key="index">
-                        <button @click="selectcolor(color)" class="rounded-full border-2 p-0.5"
-                            :class="{ 'bg-cyan-300': currentColor === color }">
-                            <span class="block size-4 rounded-full border-2 border-slate"
-                                :style="{ backgroundColor: color }"></span>
+                        <button @click="selectcolor(color.name)" class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
+                            :class="{ 'bg-cyan-300': currentColor === color.name }"
+                            :disabled="color.availity == 0">
+                        <span class="block size-4 rounded-full"   
+                                :style="{ backgroundColor: color.name }"></span>
                         </button>
                     </li>
                 </ul>
             </div>
 
+
             <div class="flex gap-2 mt-1 items-center">
-                <button class=" border-2 bg-pink-300 px-2 rounded-full"
-                    :class="{ 'disabled text-gray-400': product.available === 0 }">
+                <button class=" border-2 bg-pink-300 px-2 rounded-full disabled:text-gray-400" 
+                :disabled="product.available === 0">
                     Agregar
                 </button>
                 <h1 v-if="product.available === 0" class=" text-red-500">No disponible</h1>

@@ -100,7 +100,7 @@ const submit = async (event) => {
         <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="price"
             v-model="skincare.price" @change="handlerChange" @keydown.enter.prevent>
 
-        <button @click="discount">
+        <button @click="discount" class=" border rounded-full px-2 border-slate-400">
             <span v-if="!isDiscount">Añadir Descuento</span>
             <span v-else>Eliminar Descuento</span>
         </button>

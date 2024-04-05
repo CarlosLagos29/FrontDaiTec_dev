@@ -1,16 +1,16 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const currentPage = ref("Inicio");
 
 onMounted(() => {
-    currentPage.value = localStorage.getItem('currentPage') || 'Inicio'
+    currentPage.value = sessionStorage.getItem('currentPage') || 'Inicio'
 });
 
 const changeCurrentPage = (page) => {
     currentPage.value = page
-    localStorage.setItem('currentPage', page)
+    sessionStorage.setItem('currentPage', page)
 };
 </script>
 
@@ -37,7 +37,7 @@ const changeCurrentPage = (page) => {
         <RouterLink to="/profecionales">
             <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
                 :class="{ 'bg-pink-300': currentPage === 'Profecionales' }" @click="changeCurrentPage('Profecionales')">
-                Profecionales
+                Profesionales
             </button>
         </RouterLink>
         <RouterLink to="/ubicacion">

@@ -1,7 +1,10 @@
 <script setup>
 import AdminView from '../Reutilizables/AdminView.vue';
+import Create from './Create.vue';
+
 import { useStore } from 'vuex';
 import { ref } from "vue";
+import { BASE_URL } from '@/GlobalState/store';
 
 
 const store = useStore();
@@ -19,7 +22,7 @@ const handlercreate = () =>{
             <span v-if="!create"> + Añadir producto </span> 
             <span v-else> x </span>
          </button>
-        <h1 v-if=" store.state.edit?.source && store.state.edit?.source === 'makeups'">estoy editando</h1>
+         <Create v-show="create" :path="`${BASE_URL}products/makeups/`"/>
         <AdminView :route="'products/makeups/'"/>
     </div>
 </template>

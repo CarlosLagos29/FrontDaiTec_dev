@@ -29,10 +29,10 @@ const selectcolor = (color) => {
 
             <h1 class="text-xl font-bold">
                 Precio:
-                <span v-if="product.discount != 0">
+                <span v-if="product.discount > 0">
                     <del class=" text-slate-300">${{ product.price }}</del>
                 </span>
-                <span v-if="product.discount != 0" class=" ml-0.5 text-green-300">
+                <span v-if="product.discount > 0" class=" ml-0.5 text-green-300">
                     ${{ (product.price - (product.price * (product.discount / 100))).toFixed(2) }}
                 </span>
                 <span v-else>
@@ -43,23 +43,22 @@ const selectcolor = (color) => {
             <h1 class=" text-xl font-bold" v-if="product.crema">Tipo de crema: {{ product.crema }}</h1>
             <h1 class=" text-xl font-bold" v-if="product.skinType">Tipo de piel: {{ product.skinType }}</h1>
 
-            <div v-if="product.colors && product.colors.length " class="flex flex-col gap-1">
+            <div v-if="product.colors && product.colors.length" class="flex flex-col gap-1">
                 <h1 class=" text-xl font-bold">Colores disponibles: </h1>
                 <ul class=" flex gap-1 flex-wrap">
                     <li v-for="(color, index) in product.colors" :key="index">
-                        <button @click="selectcolor(color.name)" class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
-                            :class="{ 'bg-cyan-300': currentColor === color.name }"
-                            :disabled="color.availity == 0">
-                        <span class="block size-4 rounded-full"   
-                                :style="{ backgroundColor: color.name }"></span>
+                        <button @click="selectcolor(color.name)"
+                            class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
+                            :class="{ 'bg-cyan-300': currentColor === color.name }" :disabled="color.availity == 0">
+                            <span class="block size-4 rounded-full" :style="{ backgroundColor: color.name }"></span>
                         </button>
                     </li>
                 </ul>
             </div>
 
             <div class="flex mt-2">
-                <button class=" border-2 bg-pink-300 px-2 rounded-full disabled:text-gray-400" 
-                :disabled="product.available === 0">
+                <button class=" border-2 bg-pink-300 px-2 rounded-full disabled:text-gray-400"
+                    :disabled="product.available === 0">
                     Agregar
                 </button>
                 <h1 v-if="product.available === 0" class=" text-red-500">No disponible</h1>

@@ -8,10 +8,10 @@ const skincare = ref({
     img: [],
     description: "",
     skinType: "",
-    price: 0,
-    available: 0,
+    price: null,
+    available: null,
     crema: "",
-    discount: 0, 
+    discount: null, 
 });
 
 const store = useStore();
@@ -59,7 +59,9 @@ const discount = (event) =>{
 const submit = async (event) => {
     try {
         event.preventDefault();
-        await axios.post(`${BASE_URL}products/skincares/`, skincare.value);
+        
+        const path = `${BASE_URL}products/skincares/`
+        await axios.post(path, skincare.value);
         skincare.value = {
             name: "",
             img: [],
@@ -69,7 +71,6 @@ const submit = async (event) => {
             available: 0,
             crema: "",
         }
-        const path = `${BASE_URL}products/skincares/`
         await store.dispatch('getAdminview',path)
     } catch (error) {
         console.error(error)

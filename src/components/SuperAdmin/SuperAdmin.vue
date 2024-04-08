@@ -1,7 +1,7 @@
 <script setup> 
 import navBarSuperAdmin from "./navBarSuperAdmin.vue";
-import Generals from "./Generals/Generals.vue";
-import MakeUps from "./MakeUps/MakeUps.vue";
+import Generals from "./GeneralsAndMakeUps/Generals.vue";
+import MakeUps from "./GeneralsAndMakeUps/MakeUps.vue";
 import Oferts from "./Oferts/Oferts.vue";
 import Services from "./Services/Services.vue";
 import SkinCaresDb from "./SkincaresDb/SkinCaresDb.vue";

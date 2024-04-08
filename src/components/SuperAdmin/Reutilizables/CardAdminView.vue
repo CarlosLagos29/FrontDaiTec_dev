@@ -46,10 +46,10 @@ const editCard = async () => {
 
             <h1 class="text-xl font-bold">
                 Precio:
-                <span v-if="product.discount != 0">
+                <span v-if="product.discount > 0">
                     <del class=" text-slate-300">${{ product.price }}</del>
                 </span>
-                <span v-if="product.discount != 0" class=" ml-0.5 text-green-300">
+                <span v-if="product.discount > 0" class=" ml-0.5 text-green-300">
                     ${{ (product.price - (product.price * (product.discount / 100))).toFixed(2) }}
                 </span>
                 <span v-else>

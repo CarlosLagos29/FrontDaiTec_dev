@@ -98,7 +98,7 @@ const submit = async (event) => {
             @change="handlerChange" @keydown.enter.prevent>
 
         <label>Precio</label>
-        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="price"
+        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="price"
             v-model="skincare.price" @change="handlerChange" @keydown.enter.prevent>
 
         <button @click="discount" class=" border rounded-full px-2 border-slate-400">
@@ -107,7 +107,7 @@ const submit = async (event) => {
         </button>
         <section v-if="isDiscount">
             <label> Descuento </label>
-            <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="discount"
+            <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="discount"
             v-model="skincare.discount" @change="handlerChange" @keydown.enter.prevent>
             <label> Precio con descuento: {{ discountedPrice }}</label>
         </section>

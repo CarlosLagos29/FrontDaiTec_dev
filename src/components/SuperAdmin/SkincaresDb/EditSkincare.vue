@@ -50,9 +50,9 @@ const discount = (event) =>{
 const updateProduct = async(event) =>{
     try {
         event.preventDefault();
-        await axios.put(`${BASE_URL}products/skincares/${skincare.value._id}`, skincare.value);
-        store.dispatch('setResetEdit');
         const path = `${BASE_URL}products/skincares/`
+        await axios.put(`${path}${skincare.value._id}`, skincare.value);
+        store.dispatch('setResetEdit');
         await store.dispatch('getAdminview',path)
     } catch (error) {
         console.error(error)
@@ -65,7 +65,6 @@ onMounted(() => {
         if(skincare.value.discount != 0){
             isDiscount.value = true
         }
-        console.log(skincare.value)
     }
 })
 </script>
@@ -90,7 +89,7 @@ onMounted(() => {
             @change="handlerChange" @keydown.enter.prevent>
 
         <label>Precio</label>
-        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="price"
+        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="price"
             v-model="skincare.price" @change="handlerChange" @keydown.enter.prevent>
 
         <button @click="discount">
@@ -99,7 +98,7 @@ onMounted(() => {
         </button>
         <section v-if="isDiscount">
             <label> Descuento </label>
-            <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="discount"
+            <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="discount"
                 v-model="skincare.discount" @change="handlerChange" @keydown.enter.prevent>
             <label> Precio con descuento: {{ discountedPrice }}</label>
         </section>

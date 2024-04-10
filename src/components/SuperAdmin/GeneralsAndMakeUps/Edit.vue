@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { ref, onMounted, computed,defineProps } from 'vue';
+import { ref, onMounted, computed, defineProps } from 'vue';
 import { useStore } from 'vuex';
 
 const props = defineProps({
@@ -85,24 +85,24 @@ const deletecolor = (event) => {
     general.value.colors = deletedcolor;
 };
 
-const updateProduct = async(event) =>{
+const updateProduct = async (event) => {
     try {
         event.preventDefault();
         await axios.put(`${props.path}${general.value._id}`, general.value);
         store.dispatch('setResetEdit');
-        await store.dispatch('getAdminview',props.path);
+        await store.dispatch('getAdminview', props.path);
     } catch (error) {
         console.error(error)
     }
 };
 
-onMounted(()=>{
-    if(store.state.edit?.source && store.state.edit?.source === props.currentSource ){
-        general.value =  store.state.edit;
-        if(general.value.discount != 0){
+onMounted(() => {
+    if (store.state.edit?.source && store.state.edit?.source === props.currentSource) {
+        general.value = store.state.edit;
+        if (general.value.discount != 0) {
             isDiscount.value = true;
         }
-        if(general.value.colors?.length){
+        if (general.value.colors?.length) {
             setAvaility.value = 'Por color';
         }
     }
@@ -112,88 +112,90 @@ onMounted(()=>{
 <template>
     <form class="flex flex-col gap-y-2 m-2" action="" @submit.prevent="updateProduct">
 
-<section class="flex justify-end">
-    <button class="border border-slate-400 rounded-full px-2 " type="submit"> Actualizar Producto </button>
-</section>
+        <section class="flex justify-between gap-2">
+            <button class=" border border-slate-400 rounded-full px-2 "
+                @click="store.dispatch('setResetEdit')">Cancelar</button>
+            <button class="border border-slate-400 rounded-full px-2 " type="submit"> Actualizar Producto </button>
+        </section>
 
-<label>Nombre: {{ general.name }}</label>
-<input class="border border-slate-400 px-2 py-1 rounded-2xl" type="text" name="name" v-model="general.name"
-    @change="handlerChange" @keydown.enter.prevent>
+        <label>Nombre: {{ general.name }}</label>
+        <input class="border border-slate-400 px-2 py-1 rounded-2xl" type="text" name="name" v-model="general.name"
+            @change="handlerChange" @keydown.enter.prevent>
 
-<label>Precio</label>
-<input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="price" v-model="general.price"
-    @change="handlerChange" @keydown.enter.prevent>
+        <label>Precio</label>
+        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="price"
+            v-model="general.price" min="0" @change="handlerChange" @keydown.enter.prevent>
 
-<button @click="discount">
-    <span v-if="!isDiscount">Añadir Descuento</span>
-    <span v-else>Eliminar Descuento</span>
-</button>
-<section v-if="isDiscount">
-    <label> Descuento </label>
-    <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="discount"
-        v-model="general.discount" @change="handlerChange" @keydown.enter.prevent>
-    <label> Precio con descuento: {{ discountedPrice }}</label>
-</section>
-
-<label>Descripcion</label>
-<textarea name="description" class="border border-slate-400 px-2 py-1  rounded-2xl" type="text"
-    v-model="general.description" @change="handlerChange" cols="200" rows="10"></textarea>
-
-
-<section>
-    <h1>Seleccione tipo de disponibilidad</h1>
-    <div class=" flex gap-20 p-3">
-        <button class=" rounded-2xl px-2 py-1" :class="{ ' bg-pink-300': setAvaility === 'Estandar' }"
-            @click="avalityType" value="Estandar">
-            Estandar
+        <button @click="discount">
+            <span v-if="!isDiscount">Añadir Descuento</span>
+            <span v-else>Eliminar Descuento</span>
         </button>
-        <button class=" rounded-2xl px-2 py-1" :class="{ ' bg-pink-300': setAvaility === 'Por color' }"
-            @click="avalityType" value="Por color">
-            Por color
-        </button>
-    </div>
-    <div v-if="setAvaility === 'Estandar'">
-        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="available"
-            v-model="general.available" @change="handlerChange" @keydown.enter.prevent>
-    </div>
-    <div v-if="setAvaility === 'Por color'" class=" flex items-center gap-2 ">
+        <section v-if="isDiscount">
+            <label> Descuento: %</label>
+            <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="discount"
+                min="0" max="99.99" v-model="general.discount" @change="handlerChange" @keydown.enter.prevent>
+            <label> Precio con descuento: {{ discountedPrice }}</label>
+        </section>
 
-        <label>Color: </label>
-        <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="name"
-            v-model="currentColor.name" @change="handlerColor" @keydown.enter.prevent>
+        <label>Descripcion</label>
+        <textarea name="description" class="border border-slate-400 px-2 py-1 rounded-2xl w-full" type="text"
+            v-model="general.description" @change="handlerChange" cols="200" rows="5"></textarea>
 
-        <label> Cantidad: </label>
-        <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="availity"
-            v-model="currentColor.availity" @change="handlerColor" @keydown.enter.prevent>
-        <button class="border rounded-full px-2 py-1 border-slate-400" @click="setColor"> Agregar Color
-        </button>
-    </div>
 
-    <ul v-if="setAvaility === 'Por color'" class=" flex flex-wrap gap-2 py-2 ">
-        <li v-for="(color, index) in general.colors" :key="index"
-            class="flex flex-col gap-1 border rounded-2xl p-1">
-            <button class="text-red-500 border rounded-full px-2" :value="color.name" @click="deletecolor"> X
-            </button>
-            <p class=" flex items-center gap-1"><span class="block size-4 rounded-full"
-                    :style="{ backgroundColor: color.name }"></span> {{ color.name }}</p>
-            <p>Cantidad: {{ color.availity }}</p>
-        </li>
-    </ul>
-</section>
+        <section>
+            <h1>Seleccione tipo de disponibilidad</h1>
+            <div class=" flex gap-20 p-3">
+                <button class=" rounded-2xl px-2 py-1" :class="{ ' bg-pink-300': setAvaility === 'Estandar' }"
+                    @click="avalityType" value="Estandar">
+                    Estandar
+                </button>
+                <button class=" rounded-2xl px-2 py-1" :class="{ ' bg-pink-300': setAvaility === 'Por color' }"
+                    @click="avalityType" value="Por color">
+                    Por color
+                </button>
+            </div>
+            <div v-if="setAvaility === 'Estandar'">
+                <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="available" min="0"
+                    v-model="general.available" @change="handlerChange" @keydown.enter.prevent>
+            </div>
+            <div v-if="setAvaility === 'Por color'" class=" flex items-center gap-2 ">
 
-<label>Imagenes</label>
-<input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="colors" v-model="currentImage"
-    @keyup.enter="setImage" @change="handlerImage" @keydown.enter.prevent>
+                <label>Color: </label>
+                <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="name"
+                    v-model="currentColor.name" @change="handlerColor" @keydown.enter.prevent>
 
-<button class="border rounded-full px-2 border-slate-400" @click="setImage"> Agregar imagen </button>
+                <label> Cantidad: </label>
+                <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="availity" min="0"
+                    v-model="currentColor.availity" @change="handlerColor" @keydown.enter.prevent>
+                <button class="border rounded-full px-2 py-1 border-slate-400" @click="setColor"> Agregar Color
+                </button>
+            </div>
 
-<section class=" flex flex-row gap-2 max-w-screen-2xl overflow-scroll">
-    <ul class="flex flex-col border border-slate-400 rounded-2xl p-2" v-for="(image, index) in general.img ">
+            <ul v-if="setAvaility === 'Por color'" class=" flex flex-wrap gap-2 py-2 ">
+                <li v-for="(color, index) in general.colors" :key="index"
+                    class="flex flex-col gap-1 border rounded-2xl p-1">
+                    <button class="text-red-500 border rounded-full px-2" :value="color.name" @click="deletecolor"> X
+                    </button>
+                    <p class=" flex items-center gap-1"><span class="block size-4 rounded-full"
+                            :style="{ backgroundColor: color.name }"></span> {{ color.name }}</p>
+                    <p>Cantidad: {{ color.availity }}</p>
+                </li>
+            </ul>
+        </section>
 
-        <button class=" text-red-500 border rounded-full px-2" :value="image" @click="deleteImage"> X </button>
-        <img class=" size-64" :key="index" :src="image" :alt="image">
+        <label>Imagenes</label>
+        <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="colors" v-model="currentImage"
+            @keyup.enter="setImage" @change="handlerImage" @keydown.enter.prevent>
 
-    </ul>
-</section>
-</form>
+        <button class="border rounded-full px-2 border-slate-400" @click="setImage"> Agregar imagen </button>
+
+        <section class=" flex flex-wrap justify-center gap-2 max-w-screen-2xl ">
+            <ul class="flex flex-col border border-slate-400 rounded-2xl p-2" v-for="(image, index) in general.img ">
+
+                <button class=" text-red-500 border rounded-full px-2" :value="image" @click="deleteImage"> X </button>
+                <img class=" size-64" :key="index" :src="image" :alt="image">
+
+            </ul>
+        </section>
+    </form>
 </template>

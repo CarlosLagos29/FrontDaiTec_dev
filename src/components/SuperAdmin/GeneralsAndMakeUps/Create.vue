@@ -1,7 +1,11 @@
 <script setup>
-import { ref, computed, defineProps } from 'vue';
+import { ref, computed, defineProps, watch } from 'vue';
 import { useStore } from 'vuex';
+
 import axios from 'axios';
+import creteValidate from '../ValidationSuperAdmin/create.validate';
+import imageValidate from '../ValidationSuperAdmin/image.validate';
+
 
 const props = defineProps({
     path: String
@@ -13,10 +17,13 @@ const general = ref({
     img: [],
     description: "",
     price: null,
-    available: null,
+    available: 0,
     colors: [],
-    discount: null,
+    discount: 0,
 });
+
+const errors = ref([1]);
+const errorImage = ref([1]);
 
 const currentImage = ref("");
 const currentColor = ref({
@@ -99,15 +106,24 @@ const submit = async (event) => {
             img: [],
             description: "",
             price: null,
-            available: null,
+            available: 0,
             colors: [],
-            discount: null,
+            discount: 0,
         };
-        await store.dispatch('getAdminview',props.path)
+        await store.dispatch('getAdminview', props.path)
     } catch (error) {
         console.error(error)
     }
 };
+
+watch(general, (newValue) => {
+    errors.value = creteValidate(newValue);
+}, { deep: true });
+
+watch(currentImage, (newValue) => {
+
+    errorImage.value = imageValidate(newValue)
+});
 </script>
 
 <template>
@@ -117,28 +133,32 @@ const submit = async (event) => {
             <button class="border border-slate-400 rounded-full px-2 " type="submit"> Agregar Producto </button>
         </section>
 
-        <label>Nombre: {{ general.name }}</label>
+        <label>Nombre</label>
         <input class="border border-slate-400 px-2 py-1 rounded-2xl" type="text" name="name" v-model="general.name"
             @change="handlerChange" @keydown.enter.prevent>
+        <p v-if="errors.name" class=" text-red-500">{{ errors.name }}</p>
 
         <label>Precio</label>
-        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="price" v-model="general.price"
-            @change="handlerChange" @keydown.enter.prevent>
+        <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="price"
+            v-model="general.price" @change="handlerChange" @keydown.enter.prevent>
+        <p v-if="errors.price" class=" text-red-500"> {{ errors.price }}</p>
 
         <button @click="discount">
             <span v-if="!isDiscount">Añadir Descuento</span>
             <span v-else>Eliminar Descuento</span>
         </button>
         <section v-if="isDiscount">
-            <label> Descuento </label>
+            <label> Descuento: %</label>
             <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" step="any" name="discount"
-                v-model="general.discount" @change="handlerChange" @keydown.enter.prevent>
+                min="0" max="99.99" v-model="general.discount" @change="handlerChange" @keydown.enter.prevent>
             <label> Precio con descuento: {{ discountedPrice }}</label>
+            <p v-if="errors.discount" class=" text-red-500">{{ errors.discount }}</p>
         </section>
 
         <label>Descripcion</label>
-        <textarea name="description" class="border border-slate-400 px-2 py-1  rounded-2xl" type="text"
-            v-model="general.description" @change="handlerChange" cols="200" rows="10"></textarea>
+        <textarea name="description" class="border border-slate-400 px-2 py-1  rounded-2xl w-full" type="text"
+            v-model="general.description" @change="handlerChange" cols="200" rows="5"></textarea>
+        <p v-if="errors.description" class=" text-red-500">{{ errors.description }}</p>
 
 
         <section>
@@ -153,10 +173,13 @@ const submit = async (event) => {
                     Por color
                 </button>
             </div>
+
             <div v-if="setAvaility === 'Estandar'">
-                <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="available"
+                <input class="border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="available" min="0"
                     v-model="general.available" @change="handlerChange" @keydown.enter.prevent>
+                <p v-if="errors.available" class=" text-red-500">{{ errors.available }}</p>
             </div>
+
             <div v-if="setAvaility === 'Por color'" class=" flex items-center gap-2 ">
 
                 <label>Color: </label>
@@ -185,10 +208,14 @@ const submit = async (event) => {
         <label>Imagenes</label>
         <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="colors" v-model="currentImage"
             @keyup.enter="setImage" @change="handlerImage" @keydown.enter.prevent>
+        <p v-if="errorImage.currentImg" class=" text-red-500">{{ errorImage.currentImg }} </p>
 
-        <button class="border rounded-full px-2 border-slate-400" @click="setImage"> Agregar imagen </button>
+        <button class="border rounded-full px-2 border-slate-400 disabled:opacity-50 " @click="setImage"
+            :disabled="Object.values(errorImage).length || currentImage.trim() === ''"> Agregar imagen </button>
 
-        <section class=" flex flex-row gap-2 max-w-screen-2xl overflow-scroll">
+        <p v-if="errors.img" class=" text-red-500 text-center ">{{ errors.img }}</p>
+
+        <section class=" flex flex-wrap justify-center gap-2 max-w-screen-2xl">
             <ul class="flex flex-col border border-slate-400 rounded-2xl p-2" v-for="(image, index) in general.img ">
 
                 <button class=" text-red-500 border rounded-full px-2" :value="image" @click="deleteImage"> X </button>

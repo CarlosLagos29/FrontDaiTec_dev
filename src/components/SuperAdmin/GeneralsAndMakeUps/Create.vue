@@ -5,6 +5,7 @@ import { useStore } from 'vuex';
 import axios from 'axios';
 import creteValidate from '../ValidationSuperAdmin/create.validate';
 import imageValidate from '../ValidationSuperAdmin/image.validate';
+import colorValidate from '../ValidationSuperAdmin/color.validate';
 
 
 const props = defineProps({
@@ -24,6 +25,7 @@ const general = ref({
 
 const errors = ref([1]);
 const errorImage = ref([1]);
+const errorColors = ref([1]);
 
 const currentImage = ref("");
 const currentColor = ref({
@@ -124,13 +126,19 @@ watch(currentImage, (newValue) => {
 
     errorImage.value = imageValidate(newValue)
 });
+watch(currentColor, (newValue) => {
+
+    errorColors.value = colorValidate(newValue);
+    console.log(errorColors.value);
+}, { deep: true });
 </script>
 
 <template>
     <form class="flex flex-col gap-y-2 m-2" action="" @submit.prevent="submit">
 
         <section class="flex justify-end">
-            <button class="border border-slate-400 rounded-full px-2 " type="submit"> Agregar Producto </button>
+            <button class="border border-slate-400 rounded-full px-2 disabled:opacity-50" type="submit"
+                :disabled="Object.values(errors).length"> Agregar Producto </button>
         </section>
 
         <label>Nombre</label>
@@ -185,11 +193,15 @@ watch(currentImage, (newValue) => {
                 <label>Color: </label>
                 <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="text" name="name"
                     v-model="currentColor.name" @change="handlerColor" @keydown.enter.prevent>
+                <p v-if="errorColors.name" class=" text-red-500">{{ errorColors.name }}</p>
 
                 <label> Cantidad: </label>
                 <input class=" border border-slate-400 px-2 py-1  rounded-2xl" type="number" name="availity"
                     v-model="currentColor.availity" @change="handlerColor" @keydown.enter.prevent>
-                <button class="border rounded-full px-2 py-1 border-slate-400" @click="setColor"> Agregar Color
+                <p v-if="errorColors.availity" class=" text-red-500">{{ errorColors.availity }}</p>
+                
+                <button class="border rounded-full px-2 py-1 border-slate-400 disabled:opacity-50 " @click="setColor"
+                    :disabled="Object.values(errorColors).length"> Agregar Color
                 </button>
             </div>
 

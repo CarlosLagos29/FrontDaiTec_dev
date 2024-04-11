@@ -16,6 +16,9 @@ const store = createStore({
     setAllProducts(state, payload){
       state.allProducts = payload
     },
+    setProduct(state, payload){
+      state.allProducts = payload
+    },  
     setProfecionals(state, payload){
       state.profecionals = payload
     },
@@ -30,7 +33,8 @@ const store = createStore({
     },
     resetEdit(state) {
       state.edit = {};
-    }
+    },
+
   },
   actions: {
     async getAllProducts({commit}){
@@ -40,6 +44,14 @@ const store = createStore({
     } catch (error) {
         console.error(error);
     }
+    },
+    async getProduct({commit},path){
+      try {
+        const { data } = await axios.get(path);
+        commit('setProduct',data)
+      } catch (error) {
+        console.error(error)
+      }
     },
     async getProfecionals({commit}){
       try {

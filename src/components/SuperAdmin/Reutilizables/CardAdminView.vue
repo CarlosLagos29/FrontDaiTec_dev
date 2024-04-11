@@ -60,22 +60,29 @@ const editCard = async () => {
             <h1 class=" text-xl font-bold" v-if="product.crema">Tipo de crema: {{ product.crema }}</h1>
             <h1 class=" text-xl font-bold" v-if="product.skinType">Tipo de piel: {{ product.skinType }}</h1>
 
-            <div v-if="product.colors && product.colors.length " class="flex flex-col gap-1">
+            <div v-if="product.colors && product.colors.length" class="flex flex-col gap-1">
                 <h1 class=" text-xl font-bold">Colores disponibles: </h1>
                 <ul class=" flex gap-1 flex-wrap">
                     <li v-for="(color, index) in product.colors" :key="index">
-                        <button class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
+                        <button
+                            class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
                             :disabled="color.availity == 0">
-                        <span class="block size-4 rounded-full"   
-                                :style="{ backgroundColor: color.name }"></span>
+                            <span class="block size-4 rounded-full" :style="{ backgroundColor: color.name }"></span>
                         </button>
                     </li>
                 </ul>
             </div>
 
             <div class="flex gap-2 mt-2 items-center justify-center">
-                <button class="border-2 hover:bg-green-400 transition duration-500 px-2 rounded-full" @click="editCard">Editar</button>
-                <button class="border-2 hover:bg-red-500 transition duration-500 px-2 rounded-full" @click="deleteCard">Eliminar</button>
+                <button class="border-2 hover:bg-green-400 transition duration-500 px-2 rounded-full flex items-center"
+                    @click="editCard">
+                    <span class="material-symbols-outlined">
+                        edit_square
+                    </span></button>
+                <button class="border-2 hover:bg-red-500 transition duration-500 px-2 rounded-full flex items-center"
+                    @click="deleteCard"><span class="material-symbols-outlined">
+                        delete
+                    </span></button>
             </div>
         </section>
     </div>

@@ -7,7 +7,6 @@ const store = useStore();
 const productHandler = async (event) => {
     try {
         let path = `${BASE_URL}products/${event.target.value}`
-        console.log(path);
         await store.dispatch('getProduct', path);
     } catch (error) {
         console.error(error)

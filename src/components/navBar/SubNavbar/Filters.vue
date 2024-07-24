@@ -1,13 +1,11 @@
 <script setup>
-import { BASE_URL } from '@/GlobalState/store';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
 const productHandler = async (event) => {
     try {
-        let path = `${BASE_URL}products/${event.target.value}`
-        await store.dispatch('getProduct', path);
+        await store.dispatch('getProduct', event.target.value);
     } catch (error) {
         console.error(error)
     }

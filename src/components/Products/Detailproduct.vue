@@ -5,47 +5,28 @@ import axios from 'axios';
 import { BASE_URL } from '@/GlobalState/store'
 
 const idProduct = ref("");
-const productSource = ref("")
-const product = ref({})
-const currentColor = ref("")
-const curentImage = ref(0)
+const product = ref({});
+const currentColor = ref("");
+
 
 
 const selectcolor = (color) => {
     currentColor.value = color
 }
 
-const nextImage = () => {
-    if (curentImage.value === product.value.img.length - 1) {
-        return curentImage.value = 0
-    }
-    curentImage.value++
-}
-
-const previusImage = () => {
-    if (curentImage.value === 0) {
-        return curentImage.value = product.value.img.length - 1
-    }
-    return curentImage.value--
-}
 
 onMounted(async () => {
     const route = useRoute();
     idProduct.value = route.params.id
-    productSource.value = route.params.source
     try {
-        const response = await axios.get(`${BASE_URL}products/${productSource.value}/${idProduct.value}`)
-        product.value = response.data
-        startAutoChange()
+        const { data } = await axios.get(`${BASE_URL}products/${idProduct.value}`)
+        product.value = data
+
     } catch (error) {
         console.error(error);
     }
 })
-const startAutoChange = () => {
-    setInterval(() => {
-        nextImage();
-    }, 10000);
-}
+
 
 </script>
 
@@ -53,13 +34,11 @@ const startAutoChange = () => {
     <div class=" flex items items-center">
 
         <section class="size-96 flex items-center">
-            <button @click="previusImage" class="rounded-full"> < </button>
-                <transition name=" slice-fade">
-                    <img class=" size-96 rounded-lg transition-opacity duration-500 "
-                        :src="product.img && product.img.length > 0 ? product.img[curentImage] : ''"
-                        :alt="product.name">
-                </transition>
-            <button @click="nextImage" class="rounded-full">></button>
+            <a-carousel autoplay>
+                <span v-for="(img, index) in product.img" :key="index">
+                    <a-image :src="img" :alt="img"/>
+                </span>
+            </a-carousel>
         </section>
 
         <section class=" flex flex-col justify-center">
@@ -82,15 +61,14 @@ const startAutoChange = () => {
             <h1 class=" text-xl font-bold" v-if="product.crema">Tipo de crema: {{ product.crema }}</h1>
             <h1 class=" text-xl font-bold" v-if="product.skinType">Tipo de piel: {{ product.skinType }}</h1>
 
-            <div v-if="product.colors && product.colors.length " class="flex flex-col gap-1">
+            <div v-if="product.colors && product.colors.length" class="flex flex-col gap-1">
                 <h1 class=" text-xl font-bold">Colores disponibles: </h1>
                 <ul class=" flex gap-1 flex-wrap">
                     <li v-for="(color, index) in product.colors" :key="index">
-                        <button @click="selectcolor(color.name)" class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
-                            :class="{ 'bg-cyan-300': currentColor === color.name }"
-                            :disabled="color.availity == 0">
-                        <span class="block size-4 rounded-full"   
-                                :style="{ backgroundColor: color.name }"></span>
+                        <button @click="selectcolor(color.name)"
+                            class="rounded-full border-2 border-pink-300  p-0.5 disabled:border-gray-400 disabled:opacity-55"
+                            :class="{ 'bg-cyan-300': currentColor === color.name }" :disabled="color.availity == 0">
+                            <span class="block size-4 rounded-full" :style="{ backgroundColor: color.name }"></span>
                         </button>
                     </li>
                 </ul>
@@ -98,8 +76,8 @@ const startAutoChange = () => {
 
 
             <div class="flex gap-2 mt-1 items-center">
-                <button class=" border-2 bg-pink-300 px-2 rounded-full disabled:text-gray-400" 
-                :disabled="product.available === 0">
+                <button class=" border-2 bg-pink-300 px-2 rounded-full disabled:text-gray-400"
+                    :disabled="product.available === 0">
                     Agregar
                 </button>
                 <h1 v-if="product.available === 0" class=" text-red-500">No disponible</h1>
@@ -107,3 +85,17 @@ const startAutoChange = () => {
         </section>
     </div>
 </template>
+
+<style scoped>
+:deep(.slick-slide) {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #364d79;
+    overflow: hidden;
+}
+
+:deep(.slick-slide h3) {
+    color: #fff;
+}
+</style>

@@ -41,15 +41,15 @@ const store = createStore({
   actions: {
     async getAllProducts({ commit }) {
       try {
-        const { data}  = await axios.get(`${BASE_URL}products/`);
-        commit('setAllProducts', data)
+        const { data}  = await axios.get(`${BASE_URL}products`);
+        commit('setAllProducts', data.docs)
       } catch (error) {
         console.error(error);
       }
     },
-    async getProduct({ commit }, path) {
+    async getProduct({ commit }, source) {
       try {
-        const { data } = await axios.get(path);
+        const { data } = await axios.get(`${BASE_URL}products?source=${source}`);
         commit('setProduct', data.docs);
       } catch (error) {
         console.error(error)
@@ -63,9 +63,9 @@ const store = createStore({
         console.error(error);
       }
     },
-    async getAdminview({ commit }, path) {
+    async getAdminview({ commit }, source) {
       try {
-        const { data } = await axios.get(path);
+        const { data } = await axios.get(path`${BASE_URL}products?source=${source}`);
         commit('setAdminView', data.docs);
       } catch (error) {
         console.error(error);
@@ -81,8 +81,8 @@ const store = createStore({
     },
     async getName({ commit }, name) {
       try {
-        const { data } = await axios.get(`${BASE_URL}products/search?name=${name}`);
-        commit('getName', data)
+        const { data } = await axios.get(`${BASE_URL}products?name=${name}`);
+        commit('getName', data.docs)
       } catch (error) {
         console.error(error)
       }

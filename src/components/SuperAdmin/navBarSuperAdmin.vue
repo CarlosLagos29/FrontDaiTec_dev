@@ -2,10 +2,10 @@
 // import { RouterLink } from 'vue-router';
 import { useStore } from 'vuex';
 
-const store = useStore();
+const { state, commit } = useStore();
 
 const changeSection = (page) => {
-    store.commit('setDashboard',page)
+    commit('setDashboard', page)
 };
 
 
@@ -13,39 +13,48 @@ const changeSection = (page) => {
 </script>
 
 <template>
-    <nav class="gap-3 flex flex-col py-8 text-xl">
+    <nav class="gap-3 flex flex-col justify-center items-center text-xl">
+
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Productos Gennerales' }" @click="changeSection('Productos Gennerales')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Promos' }"
+            @click="changeSection('Promos')">
+            Promos
+        </button>
+
+        <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Productos Gennerales' }"
+            @click="changeSection('Productos Gennerales')">
             Productos Gennerales
         </button>
 
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'MakeUps' }" @click="changeSection('MakeUps')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'MakeUps' }" @click="changeSection('MakeUps')">
             MakeUps
         </button>
 
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Skincares' }" @click="changeSection('Skincares')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Skincares' }" @click="changeSection('Skincares')">
             Skincares
         </button>
-  
+
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Servicios' }" @click="changeSection('Servicios')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Servicios' }" @click="changeSection('Servicios')">
             Servicios
         </button>
 
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Ofertas' }" @click="changeSection('Ofertas')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Ofertas' }" @click="changeSection('Ofertas')">
             Ofertas
         </button>
 
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Turnos' }" @click="changeSection('Turnos')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Turnos' }" @click="changeSection('Turnos')">
             Turnos
         </button>
 
         <button class=" hover:bg-pink-300 transition duration-500 rounded-2xl p-2 "
-            :class="{ 'bg-pink-300': store.state.currentDashboard  === 'Profecionales' }" @click="changeSection('Profecionales')">
+            :class="{ 'bg-pink-300': state.currentDashboard === 'Profecionales' }"
+            @click="changeSection('Profecionales')">
             Profesionales
         </button>
     </nav>

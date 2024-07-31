@@ -5,11 +5,12 @@ export const BASE_URL = 'http://localhost:3001/'
 
 const store = createStore({
   state: {
-    currentDashboard: 'Productos Gennerales',
+    currentDashboard: 'Promos',
     allProducts: [],
     profecionals: [],
     adminView: [],
     edit: {},
+    promos:[],
 
   },
   mutations: {
@@ -36,6 +37,9 @@ const store = createStore({
     },
     getName(state, payload) {
       state.allProducts = payload
+    },
+    setPromos(state, payload) {
+      state.promos = payload;
     }
   },
   actions: {
@@ -83,6 +87,14 @@ const store = createStore({
       try {
         const { data } = await axios.get(`${BASE_URL}products?name=${name}`);
         commit('getName', data.docs)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getPromos({ commit }){
+      try {
+        const { data } = await axios.get(`${BASE_URL}promos/`);
+        commit('setPromos', data);
       } catch (error) {
         console.error(error)
       }

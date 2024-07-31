@@ -40,6 +40,7 @@ const editCard = async () => {
                 <img class=" size-64 rounded-lg " :src="product.img[0]" :alt="product.name">
             </section>
         </RouterLink>
+        
         <section>
             <h1>{{ product._id }}</h1>
             <h1 class=" text-xl font-bold">{{ product.name }}</h1>

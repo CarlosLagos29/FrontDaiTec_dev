@@ -6,7 +6,7 @@ import { DeleteOutlined } from '@ant-design/icons-vue'
 import axios from "axios";
 
 const { id, type, name } = defineProps({
-    id: Number,
+    id: String,
     type: String,
     name: String,
 });
@@ -15,7 +15,9 @@ const handleDelete = async () => {
     try {
         await axios.delete(`${BASE_URL}${type}/${id}`);
 
-        const succesMessage = message.success(`Se elimino ${name}`)
+        const succesMessage = message.success(`Se elimino ${name}`);
+
+        succesMessage();
     } catch (error) {
         const errorMessage = message.error(`Se produjo un error al eliminar ${name}`,0);
         errorMessage();

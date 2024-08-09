@@ -8,7 +8,7 @@ const { dispatch, state } = useStore();
 
 
 onMounted(() => {
-  dispatch('getPromos')
+  dispatch('getPromos');
 }
 );
 

@@ -2,8 +2,12 @@
 import { BASE_URL } from "@/GlobalState/store";
 import { message } from "ant-design-vue";
 import { h } from "vue";
-import { DeleteOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined } from '@ant-design/icons-vue';
+import { useStore } from "vuex";
+
 import axios from "axios";
+
+const { dispatch } = useStore()
 
 const { id, type, name } = defineProps({
     id: String,
@@ -18,11 +22,15 @@ const handleDelete = async () => {
         const succesMessage = message.success(`Se elimino ${name}`);
 
         succesMessage();
+
+        if (type === "promos") {
+            dispatch('getPromos');
+        }
     } catch (error) {
-        const errorMessage = message.error(`Se produjo un error al eliminar ${name}`,0);
+        const errorMessage = message.error(`Se produjo un error al eliminar ${name}`, 0);
         errorMessage();
         console.error(error);
-    } finally{
+    } finally {
         const loadingMessage = message.loading(`Eliminando ${name}...`, 0);
         loadingMessage();
     }

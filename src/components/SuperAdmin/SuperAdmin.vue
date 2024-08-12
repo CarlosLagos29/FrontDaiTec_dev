@@ -16,11 +16,11 @@ const { dispatch, state }= useStore();
 
 
 <template>
-    <div class="flex mx-3 gap-6">
-        <nav class=" border border-slate-400 rounded-3xl py-6 ">
+    <div class="flex justify-center items-center mx-12 gap-6 ">
+        <nav class=" border border-slate-400 rounded-3xl py-6 w-[15%]">
             <navBarSuperAdmin />
         </nav>
-        <section>
+        <section class="w-[85%]">
             
             <Promos v-if="state.currentDashboard  === 'Promos'"/>
             <Oferts v-if="state.currentDashboard  === 'Ofertas'"/>

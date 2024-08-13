@@ -40,31 +40,25 @@ const submit = async () => {
     }
 };
 
-const cancel = async () => {
-    const imgToDelete = newPromo.value.url;
-    try {
-        if(newPromo.value.url.trim() !== ""){
-        await axios.delete(`${BASE_URL}images/`, { data: { imageUrl: imgToDelete } } );
-    }
-        emit('handleCreate');
-    } catch (error) {
-        console.error(error)
-    }
-};
+
+
 </script>
 
 <template>
     <form class=" mt-4 flex flex-col gap-3 justify-center w-full" @keydown.enter.prevent @submit.prevent="submit">
         <section>
-            <button type="button" class=" border border-red-500 rounded-md px-4 py-2 text-buttons hover:text-white hover:bg-red-500 " @click="cancel"> Cancelar </button>
+            <button type="button" class=" border border-red-500 rounded-md px-4 py-2 text-buttons hover:text-white hover:bg-red-500 " @click="emit('handleCreate')"> Cancelar </button>
         </section>
+
         <label>Nombre: </label>
         <input class="border border-slate-400 px-2 py-1 rounded-md placeholder:italic" placeholder="ejemplo: promo 1"
             type="text" name="nameModel" v-model="newPromo.name">
         <!-- <a-alert class=" rounded-md py-1 text-red-600 " v-if="errors.name" type="error" :message="errors.name" banner /> -->
+        
         <label>Imagen promocional: </label>
         <uniqueImage :url="newPromo.url" @handleCreateImg="handleCreateImg"
             @handleDeleteImg="() => newPromo.url = ''" />
+            
         <a-button html-type="submit">Submit</a-button>
     </form>
 </template>

@@ -10,10 +10,9 @@ const addPromo = ref(false);
 <template>
         <div>
             <button  @click="addPromo = !addPromo">
-                <span v-if="!addPromo" class=" border border-titulos rounded-md px-4 py-2 text-buttons"> + Añadir promo</span>
+                <span v-if="!addPromo" class=" border rounded-md px-4 py-2 text-buttons"> + Añadir promo</span>
             </button>
         <createPromos v-if="addPromo" @handleCreate="addPromo = !addPromo" />
         <viewPromos/>
     </div>
-
 </template>

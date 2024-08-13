@@ -1,10 +1,12 @@
 <script setup>
 import { DeleteOutlined, InboxOutlined } from '@ant-design/icons-vue'
-import { h } from 'vue';
+import { h, onUnmounted, onMounted } from 'vue';
 import { BASE_URL } from '@/GlobalState/store';
 import { message } from 'ant-design-vue';
 
 import axios from 'axios';
+import deleteCloud from '../Functions/deleteCloud';
+
 
 const props = defineProps({
     url: String,
@@ -52,6 +54,16 @@ const removeImage = async () => {
         loadingMessage();
     }
 };
+
+onMounted(() => {
+    window.addEventListener('beforeunload', () => deleteCloud(props.url));
+});
+
+onUnmounted(() => {
+    window.removeEventListener('beforeunload', () => deleteCloud(props.url));
+    deleteCloud(props.url);
+});
+
 </script>
 
 <template>
@@ -70,7 +82,7 @@ const removeImage = async () => {
         <section v-else class=" grid justify-center gap-3 shadow-custom rounded-md p-4">
             <a-button class="full-width-button" type="primary" danger :icon="h(DeleteOutlined)"
                 @click="removeImage()" />
-            <a-image class="max-h-96 rounded-md " :src="props.url" :alt="props.url" />
+            <a-image class="max-h-96 rounded-md " :src="url" :alt="url" />
         </section>
     </div>
 </template>

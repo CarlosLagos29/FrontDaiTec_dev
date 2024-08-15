@@ -9,16 +9,18 @@ import axios from 'axios';
 
 const { dispatch } = useStore();
 
+const isEditing = ref(false);
+
 const props = defineProps({
     profecional: {
         type: Object,
-        default:() => ({
+        default: () => ({
             name: "",
             img: "",
             description: "",
             services: [],
-    })
-}
+        })
+    }
 })
 
 const newProfecional = ref({});
@@ -49,35 +51,57 @@ const handleDeleteService = (service) => {
 }
 
 const cancel = async () => {
-    const imgToDelete = newProfecional.value.img;
-    try {
-        if (newProfecional.value.img.trim() !== "") {
-            await axios.delete(`${BASE_URL}images/`, { data: { imageUrl: imgToDelete } });
-        }
-        emit('handleCreate');
-    } catch (error) {
-        console.error(error)
+    if (isEditing.value === true) {
+        dispatch('setResetEdit');
     }
+    else {
+        const imgToDelete = newProfecional.value.img;
+        try {
+            if (newProfecional.value.img.trim() !== "") {
+                await axios.delete(`${BASE_URL}images/`, { data: { imageUrl: imgToDelete } });
+            }
+            emit('handleCreate');
+        } catch (error) {
+            console.error(error)
+        }
+    };
 };
 
 const submit = async () => {
-    // try {
-    //     await axios.post(`${BASE_URL}users/profecionals/`, newProfecional.value);
-    //     message.success(`El profecinal "${newProfecional.value.name}" fue creado con exito`);
-    //     emit('handleCreate');
-    //     dispatch('getProfecionals');
-    // } catch (error) {
-    //     message.error('Error al cargar el Profecional');
-    //     console.error(error)
-    // } finally {
-    //     const loadingMessage = message.loading('Subiendo profecional...', 0);
-    //     loadingMessage();
-    // }
-    console.log(newProfecional.value);
+    if (isEditing.value === true) {
+        try {
+            await axios.put(`${BASE_URL}users/profecionals/${newProfecional.value._id}`, newProfecional.value);
+            message.success(`El profecinal "${newProfecional.value.name}" fue edito`);
+            dispatch('setResetEdit');
+        } catch (error) {
+            message.error('Error al editar el Profecional');
+            console.error(error)
+        } finally {
+            const loadingMessage = message.loading('Editando profecional...', 0);
+            loadingMessage();
+        }
+    }
+    else {
+        try {
+            await axios.post(`${BASE_URL}users/profecionals/`, newProfecional.value);
+            message.success(`El profecinal "${newProfecional.value.name}" fue creado con exito`);
+            emit('handleCreate');
+            dispatch('getProfecionals');
+        } catch (error) {
+            message.error('Error al cargar el Profecional');
+            console.error(error)
+        } finally {
+            const loadingMessage = message.loading('Subiendo profecional...', 0);
+            loadingMessage();
+        }
+    };
 };
 
-onMounted(()=>{
+onMounted(() => {
     newProfecional.value = props.profecional;
+    if (props.profecional._id) {
+        isEditing.value = true;
+    };
 });
 </script>
 

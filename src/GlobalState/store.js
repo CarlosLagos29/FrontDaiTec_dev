@@ -10,7 +10,7 @@ const store = createStore({
     profecionals: [],
     adminView: [],
     edit: {},
-    promos:[],
+    promos: [],
 
   },
   mutations: {
@@ -45,7 +45,7 @@ const store = createStore({
   actions: {
     async getAllProducts({ commit }) {
       try {
-        const { data}  = await axios.get(`${BASE_URL}products`);
+        const { data } = await axios.get(`${BASE_URL}products`);
         commit('setAllProducts', data.docs)
       } catch (error) {
         console.error(error);
@@ -75,9 +75,9 @@ const store = createStore({
         console.error(error);
       }
     },
-    async getEdit({ commit }, path) {
+    async getEdit({ commit }, { id, type }) {
       try {
-        const { data } = await axios.get(path);
+        const { data } = await axios.get(`${BASE_URL}${type}/${id}`);
         commit('setEdit', data)
       } catch (error) {
         console.error(error)
@@ -91,7 +91,7 @@ const store = createStore({
         console.error(error)
       }
     },
-    async getPromos({ commit }){
+    async getPromos({ commit }) {
       try {
         const { data } = await axios.get(`${BASE_URL}promos/`);
         commit('setPromos', data);

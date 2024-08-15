@@ -26,6 +26,9 @@ const handleDelete = async () => {
         if (type === "promos") {
             dispatch('getPromos');
         }
+        if (type === "users/profecionals"){
+            dispatch('getProfecionals');
+        }
     } catch (error) {
         const errorMessage = message.error(`Se produjo un error al eliminar ${name}`, 0);
         errorMessage();
@@ -44,3 +47,10 @@ const handleDelete = async () => {
             :icon="h(DeleteOutlined)" />
     </a-popconfirm>
 </template>
+
+<style scoped>
+.full-width-button {
+    width: 100%;
+    height: 120%;
+}
+</style>

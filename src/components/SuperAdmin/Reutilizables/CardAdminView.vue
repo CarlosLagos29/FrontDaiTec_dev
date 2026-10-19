@@ -2,20 +2,19 @@
 import { RouterLink } from 'vue-router';
 import { defineProps, ref } from 'vue';
 import { useStore } from 'vuex';
+import { BASE_URL } from '@/GlobalState/store';
 import axios from 'axios';
 
 const props = defineProps({
     product: Object,
-    path: String,
 })
 
 const store = useStore()
 
 const deleteCard = async () => {
     try {
-        const fullpath = `${props.path}${props.product._id}`;
-        await axios.delete(fullpath);
-        await store.dispatch('getAdminview', props.path)
+        await axios.delete(`${BASE_URL}products/${props.product._id}`);
+        await store.dispatch('getAdminview', props.product.source)
     } catch (error) {
         console.error(error)
     }
@@ -23,8 +22,7 @@ const deleteCard = async () => {
 
 const editCard = async () => {
     try {
-        const fullpath = `${props.path}${props.product._id}`;
-        await store.dispatch('getEdit', fullpath);
+        await store.dispatch('getEdit', { id: props.product._id, type: 'products' });
     } catch (error) {
         console.error(error)
     }

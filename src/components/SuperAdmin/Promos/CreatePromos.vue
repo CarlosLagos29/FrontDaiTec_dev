@@ -14,6 +14,8 @@ const newPromo = ref({
     url: "",
 });
 
+const imageInput = ref(null);
+
 const emit = defineEmits(['handleCreate']);
 
 const handleCreateImg = (img) => {
@@ -27,6 +29,7 @@ const submit = async () => {
     else {
         try {
             await axios.post(`${BASE_URL}promos/`, newPromo.value);
+            imageInput.value.markSaved();
             message.success(`La promo "${newPromo.value.name}" fue creado con exito`);
             emit('handleCreate');
             dispatch('getPromos');
@@ -56,7 +59,7 @@ const submit = async () => {
         <!-- <a-alert class=" rounded-md py-1 text-red-600 " v-if="errors.name" type="error" :message="errors.name" banner /> -->
         
         <label>Imagen promocional: </label>
-        <uniqueImage :url="newPromo.url" @handleCreateImg="handleCreateImg"
+        <uniqueImage ref="imageInput" :url="newPromo.url" @handleCreateImg="handleCreateImg"
             @handleDeleteImg="() => newPromo.url = ''" />
             
         <a-button html-type="submit">Submit</a-button>

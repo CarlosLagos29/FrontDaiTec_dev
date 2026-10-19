@@ -1,5 +1,5 @@
 <script setup>
-import deleteButton from '../Reutilizables/Buttons/deleteButton.vue';
+import deleteButton from '../Reutilizables/Buttons/DeleteButton.vue';
 
 const props = defineProps({
   promo: Object,

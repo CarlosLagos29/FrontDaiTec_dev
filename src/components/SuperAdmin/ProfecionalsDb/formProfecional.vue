@@ -24,6 +24,7 @@ const props = defineProps({
 })
 
 const newProfecional = ref({});
+const imageInput = ref(null);
 
 
 const emit = defineEmits(['handleCreate']);
@@ -71,6 +72,7 @@ const submit = async () => {
     if (isEditing.value === true) {
         try {
             await axios.put(`${BASE_URL}users/profecionals/${newProfecional.value._id}`, newProfecional.value);
+            imageInput.value.markSaved();
             message.success(`El profecinal "${newProfecional.value.name}" fue edito`);
             dispatch('setResetEdit');
         } catch (error) {
@@ -84,6 +86,7 @@ const submit = async () => {
     else {
         try {
             await axios.post(`${BASE_URL}users/profecionals/`, newProfecional.value);
+            imageInput.value.markSaved();
             message.success(`El profecinal "${newProfecional.value.name}" fue creado con exito`);
             emit('handleCreate');
             dispatch('getProfecionals');
@@ -118,7 +121,7 @@ onMounted(() => {
             type="text" name="nameModel" v-model="newProfecional.name">
 
         <label> Foto: </label>
-        <uniqueImage :url="newProfecional.img" @handleCreateImg="handleCreateImg"
+        <uniqueImage ref="imageInput" :url="newProfecional.img" @handleCreateImg="handleCreateImg"
             @handleDeleteImg="() => newProfecional.img = ''" />
 
         <label> Descripcion: </label>

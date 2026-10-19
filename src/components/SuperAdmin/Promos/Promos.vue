@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 
-import viewPromos from "./viewPromos.vue";
-import createPromos from "./createPromos.vue";
+import viewPromos from "./ViewPromos.vue";
+import createPromos from "./CreatePromos.vue";
 
 const addPromo = ref(false);
 </script>

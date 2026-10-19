@@ -4,18 +4,18 @@ import { useStore } from 'vuex';
 import CardAdminView from "./CardAdminView.vue"
 
 const props = defineProps({
-    route: String
+    source: String
 });
 
 
 const { state, dispatch } = useStore();
 
-onMounted(dispatch('getAdminview'));
+onMounted(() => dispatch('getAdminview', props.source));
 
 </script>
 
 <template>
     <div class="flex flex-wrap">
-        <CardAdminView v-for="(p, index) in state.adminView" :key="index" :product="p" :path="fullpath" />
+        <CardAdminView v-for="(p, index) in state.adminView" :key="index" :product="p" />
     </div>
 </template>

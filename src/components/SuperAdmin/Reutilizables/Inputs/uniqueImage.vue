@@ -14,6 +14,26 @@ const props = defineProps({
 
 const emit = defineEmits(['handleCreateImg', 'handleDeleteImg']);
 
+// Imagenes subidas desde este componente: si no se guardan, se limpian de Cloudinary
+const uploadedUrls = new Set();
+// Imagenes ya guardadas que se quitaron del form: se borran de Cloudinary recien al guardar
+const pendingDeletes = new Set();
+let saved = false;
+
+const markSaved = () => {
+    saved = true;
+    pendingDeletes.forEach((url) => deleteCloud(url));
+    pendingDeletes.clear();
+};
+
+defineExpose({ markSaved });
+
+const deleteUnsavedImage = () => {
+    if (!saved && uploadedUrls.has(props.url)) {
+        deleteCloud(props.url);
+    }
+};
+
 const handleBeforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -30,6 +50,7 @@ const handleCustomRequest = async ({ file }) => {
         const { data } = await axios.post(`${BASE_URL}images/`, formData);
         if (data) {
             message.success('Imagen subida exitosamente!');
+            uploadedUrls.add(data.imageUrl);
             emit('handleCreateImg', data.imageUrl);
         }
     } catch (error) {
@@ -42,10 +63,18 @@ const handleCustomRequest = async ({ file }) => {
 
 const removeImage = async () => {
     const imgToDelete = props.url;
+
+    if (!uploadedUrls.has(imgToDelete)) {
+        pendingDeletes.add(imgToDelete);
+        emit('handleDeleteImg');
+        return;
+    }
+
     const loadingMessage = message.loading('Eliminando imagen...', 0);
     try {
         await axios.delete(`${BASE_URL}images/`, { data: { imageUrl: imgToDelete } } );
         message.success('Imagen eliminada exitosamente!');
+        uploadedUrls.delete(imgToDelete);
         emit('handleDeleteImg');
     } catch (error) {
         message.error('Error al eliminar la imagen');
@@ -56,12 +85,12 @@ const removeImage = async () => {
 };
 
 onMounted(() => {
-    window.addEventListener('beforeunload', () => deleteCloud(props.url));
+    window.addEventListener('beforeunload', deleteUnsavedImage);
 });
 
 onUnmounted(() => {
-    window.removeEventListener('beforeunload', () => deleteCloud(props.url));
-    deleteCloud(props.url);
+    window.removeEventListener('beforeunload', deleteUnsavedImage);
+    deleteUnsavedImage();
 });
 
 </script>

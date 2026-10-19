@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useStore } from 'vuex';
 
-import cardPromos from './cardPromos.vue';
+import cardPromos from './CardPromos.vue';
 
 const { dispatch, state } = useStore();
 

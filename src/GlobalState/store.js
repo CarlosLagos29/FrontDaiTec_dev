@@ -69,7 +69,7 @@ const store = createStore({
     },
     async getAdminview({ commit }, source) {
       try {
-        const { data } = await axios.get(path`${BASE_URL}products?source=${source}`);
+        const { data } = await axios.get(`${BASE_URL}products?source=${source}`);
         commit('setAdminView', data.docs);
       } catch (error) {
         console.error(error);

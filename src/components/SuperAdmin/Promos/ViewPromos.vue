@@ -1,21 +1,23 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useStore } from 'vuex';
+import { onMounted } from "vue";
+import { useStore } from "vuex";
 
-import cardPromos from './CardPromos.vue';
+import cardPromos from "./CardPromos.vue";
 
 const { dispatch, state } = useStore();
 
-
 onMounted(() => {
-  dispatch('getPromos');
-}
-);
-
+    dispatch("getPromos");
+});
 </script>
 
 <template>
     <div>
-        <cardPromos v-for="(promo, index) in state.promos" :key="index" :promo="promo" :order="index"/>
+        <cardPromos
+            v-for="(promo, index) in state.promos"
+            :key="index"
+            :promo="promo"
+            :order="index"
+        />
     </div>
 </template>

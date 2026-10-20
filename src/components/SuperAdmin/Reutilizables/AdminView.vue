@@ -1,17 +1,15 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useStore } from 'vuex';
-import CardAdminView from "./CardAdminView.vue"
+import { onMounted } from "vue";
+import { useStore } from "vuex";
+import CardAdminView from "./CardAdminView.vue";
 
 const props = defineProps({
-    source: String
+    source: String,
 });
-
 
 const { state, dispatch } = useStore();
 
-onMounted(() => dispatch('getAdminview', props.source));
-
+onMounted(() => dispatch("getAdminview", props.source));
 </script>
 
 <template>

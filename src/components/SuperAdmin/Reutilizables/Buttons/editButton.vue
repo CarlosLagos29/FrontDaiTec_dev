@@ -1,23 +1,27 @@
 <script setup>
-import { EditOutlined } from '@ant-design/icons-vue'
-import { useStore } from 'vuex';
-import { h } from 'vue';
+import { EditOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { h } from "vue";
 
 const { dispatch } = useStore();
 
 const props = defineProps({
     id: String,
     type: String,
-})
+});
 
 const handleClick = () => {
-    dispatch('getEdit', { type: props.type, id: props.id });
-}; 
+    dispatch("getEdit", { type: props.type, id: props.id });
+};
 </script>
 
 <template>
-    <a-button class=" full-width-button bg-yellow-400 flex justify-center items-center" type="primary" @click="handleClick"
-        :icon="h(EditOutlined)" />
+    <a-button
+        class="full-width-button bg-yellow-400 flex justify-center items-center"
+        type="primary"
+        :icon="h(EditOutlined)"
+        @click="handleClick"
+    />
 </template>
 
 <style scoped>

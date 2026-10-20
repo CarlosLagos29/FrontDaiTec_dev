@@ -1,6 +1,6 @@
 <script setup>
-import manyImages from '../Reutilizables/Inputs/manyImages.vue';
-import { ref } from 'vue';
+import manyImages from "../Reutilizables/Inputs/manyImages.vue";
+import { ref } from "vue";
 
 const images = ref([]);
 
@@ -16,6 +16,10 @@ const handleDeleteImage = (index) => {
 <template>
     <div>
         <h1>Oferts</h1>
-        <manyImages :images="images" @handleEmit="handleEmit" @handleDeleteImage="handleDeleteImage"/>
+        <manyImages
+            :images="images"
+            @handle-emit="handleEmit"
+            @handle-delete-image="handleDeleteImage"
+        />
     </div>
 </template>

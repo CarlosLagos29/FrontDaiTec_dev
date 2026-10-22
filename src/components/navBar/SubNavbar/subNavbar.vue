@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import SearchBar from "./SearchBar.vue";
 import Filters from "./Filters.vue";
 </script>

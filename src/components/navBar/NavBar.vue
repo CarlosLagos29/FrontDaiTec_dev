@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { RouterLink } from "vue-router";
 import { onMounted, ref } from "vue";
 
@@ -8,7 +8,7 @@ onMounted(() => {
     currentPage.value = sessionStorage.getItem("currentPage") || "Inicio";
 });
 
-const changeCurrentPage = (page) => {
+const changeCurrentPage = (page: string) => {
     currentPage.value = page;
     sessionStorage.setItem("currentPage", page);
 };

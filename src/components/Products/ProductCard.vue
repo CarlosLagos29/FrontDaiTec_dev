@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import type { Product } from "@/types";
 
-defineProps({
-    product: Object,
-});
+defineProps<{
+    product: Product;
+}>();
 
 const currentColor = ref("");
 
-const selectcolor = (color) => {
+const selectcolor = (color: string) => {
     currentColor.value = color;
 };
 </script>

@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 // import { RouterLink } from 'vue-router';
 import { useStore } from "vuex";
 
 const { state, commit } = useStore();
 
-const changeSection = (page) => {
+const changeSection = (page: string) => {
     commit("setDashboard", page);
 };
 </script>

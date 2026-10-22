@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import deleteButton from "../Reutilizables/Buttons/DeleteButton.vue";
 import editButton from "../Reutilizables/Buttons/editButton.vue";
+import type { Profecional } from "@/types";
 
-defineProps({
-    profecional: Object,
-});
+defineProps<{
+    profecional: Profecional;
+}>();
 </script>
 
 <template>

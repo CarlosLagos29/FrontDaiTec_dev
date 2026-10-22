@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { EditOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { h } from "vue";
 
 const { dispatch } = useStore();
 
-const props = defineProps({
-    id: String,
-    type: String,
-});
+const props = defineProps<{
+    id: string;
+    // Ruta del recurso en la API: "products", "users/profecionals", ...
+    type: string;
+}>();
 
 const handleClick = () => {
     dispatch("getEdit", { type: props.type, id: props.id });

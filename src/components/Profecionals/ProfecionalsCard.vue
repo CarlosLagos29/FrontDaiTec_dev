@@ -1,8 +1,11 @@
-<script setup>
-defineProps({
-    profecional: Object,
-    order: Number,
-});
+<script setup lang="ts">
+import type { Profecional } from "@/types";
+
+defineProps<{
+    profecional: Profecional;
+    // Posición en la lista: alterna la animación de entrada
+    order: number;
+}>();
 </script>
 
 <template>

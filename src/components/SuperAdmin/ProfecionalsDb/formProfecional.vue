@@ -1,34 +1,46 @@
-<script setup>
-import { ref, onMounted } from "vue";
-import { BASE_URL } from "@/GlobalState/store";
+<script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
+import { BASE_URL } from "@/api/config";
 import { message } from "ant-design-vue";
 import { useStore } from "vuex";
+import type { Profecional } from "@/types";
 
 import uniqueImage from "../Reutilizables/Inputs/uniqueImage.vue";
 import axios from "axios";
 
+// Sin _id = crear; con _id = editar
+type ProfecionalForm = Omit<Profecional, "_id"> & { _id?: string };
+
 const { dispatch } = useStore();
 
-const isEditing = ref(false);
-
-const props = defineProps({
-    profecional: {
-        type: Object,
-        default: () => ({
+const props = withDefaults(
+    defineProps<{
+        profecional?: ProfecionalForm;
+    }>(),
+    {
+        profecional: () => ({
             name: "",
             img: "",
             description: "",
             services: [],
         }),
     },
+);
+
+const isEditing = !!props.profecional._id;
+
+// Copia: el form no modifica el objeto que viene por prop (en edición es el state.edit del store)
+const newProfecional = ref<ProfecionalForm>({
+    ...props.profecional,
+    services: [...props.profecional.services],
 });
+const imageInput = useTemplateRef("imageInput");
 
-const newProfecional = ref({});
-const imageInput = ref(null);
+const emit = defineEmits<{
+    handleCreate: [];
+}>();
 
-const emit = defineEmits(["handleCreate"]);
-
-const handleCreateImg = (img) => {
+const handleCreateImg = (img: string) => {
     newProfecional.value.img = img;
 };
 
@@ -42,7 +54,7 @@ const handleSetService = () => {
     }
 };
 
-const handleDeleteService = (service) => {
+const handleDeleteService = (service: string) => {
     const index = newProfecional.value.services.indexOf(service);
     if (index > -1) {
         newProfecional.value.services.splice(index, 1);
@@ -50,7 +62,7 @@ const handleDeleteService = (service) => {
 };
 
 const cancel = async () => {
-    if (isEditing.value === true) {
+    if (isEditing) {
         dispatch("setResetEdit");
     } else {
         const imgToDelete = newProfecional.value.img;
@@ -66,13 +78,13 @@ const cancel = async () => {
 };
 
 const submit = async () => {
-    if (isEditing.value === true) {
+    if (isEditing) {
         try {
             await axios.put(
                 `${BASE_URL}users/profecionals/${newProfecional.value._id}`,
                 newProfecional.value,
             );
-            imageInput.value.markSaved();
+            imageInput.value?.markSaved();
             message.success(`El profecinal "${newProfecional.value.name}" fue edito`);
             dispatch("setResetEdit");
         } catch (error) {
@@ -85,7 +97,7 @@ const submit = async () => {
     } else {
         try {
             await axios.post(`${BASE_URL}users/profecionals/`, newProfecional.value);
-            imageInput.value.markSaved();
+            imageInput.value?.markSaved();
             message.success(`El profecinal "${newProfecional.value.name}" fue creado con exito`);
             emit("handleCreate");
             dispatch("getProfecionals");
@@ -98,13 +110,6 @@ const submit = async () => {
         }
     }
 };
-
-onMounted(() => {
-    newProfecional.value = props.profecional;
-    if (props.profecional._id) {
-        isEditing.value = true;
-    }
-});
 </script>
 
 <template>

@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { useStore } from "vuex";
 
 const store = useStore();
 
-const productHandler = async (event) => {
+const productHandler = async (event: Event) => {
     try {
-        await store.dispatch("getProduct", event.target.value);
+        await store.dispatch("getProduct", (event.target as HTMLSelectElement).value);
     } catch (error) {
         console.error(error);
     }

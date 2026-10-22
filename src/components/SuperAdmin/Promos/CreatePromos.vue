@@ -1,23 +1,26 @@
-<script setup>
-import { ref } from "vue";
-import { BASE_URL } from "@/GlobalState/store";
+<script setup lang="ts">
+import { ref, useTemplateRef } from "vue";
+import { BASE_URL } from "@/api/config";
 import { message } from "ant-design-vue";
 import { useStore } from "vuex";
+import type { Promo } from "@/types";
 
 import uniqueImage from "../Reutilizables/Inputs/uniqueImage.vue";
 import axios from "axios";
 
 const { dispatch } = useStore();
-const newPromo = ref({
+const newPromo = ref<Pick<Promo, "name" | "url">>({
     name: "",
     url: "",
 });
 
-const imageInput = ref(null);
+const imageInput = useTemplateRef("imageInput");
 
-const emit = defineEmits(["handleCreate"]);
+const emit = defineEmits<{
+    handleCreate: [];
+}>();
 
-const handleCreateImg = (img) => {
+const handleCreateImg = (img: string) => {
     newPromo.value.url = img;
 };
 
@@ -27,7 +30,7 @@ const submit = async () => {
     } else {
         try {
             await axios.post(`${BASE_URL}promos/`, newPromo.value);
-            imageInput.value.markSaved();
+            imageInput.value?.markSaved();
             message.success(`La promo "${newPromo.value.name}" fue creado con exito`);
             emit("handleCreate");
             dispatch("getPromos");

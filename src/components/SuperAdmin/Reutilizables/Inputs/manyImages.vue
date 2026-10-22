@@ -1,17 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { DeleteOutlined, InboxOutlined } from "@ant-design/icons-vue";
 import { h } from "vue";
-import { BASE_URL } from "@/GlobalState/store";
+import { BASE_URL } from "@/api/config";
 import { message } from "ant-design-vue";
+import type { UploadProps } from "ant-design-vue";
 import axios from "axios";
 
-const props = defineProps({
-    images: Array,
-});
+const props = defineProps<{
+    images: string[];
+}>();
 
-const emit = defineEmits(["handleEmit", "handleDeleteImage"]);
+const emit = defineEmits<{
+    handleEmit: [url: string];
+    handleDeleteImage: [index: number];
+}>();
 
-const handleBeforeUpload = (file) => {
+const handleBeforeUpload: NonNullable<UploadProps["beforeUpload"]> = (file) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
         message.error("Solo puedes subir archivos JPG/PNG!");
@@ -19,14 +23,14 @@ const handleBeforeUpload = (file) => {
     return isJpgOrPng;
 };
 
-const handleCustomRequest = async ({ file }) => {
+const handleCustomRequest: NonNullable<UploadProps["customRequest"]> = async ({ file }) => {
     const loadingMessage = message.loading("Subiendo imágenes...", 0);
 
     try {
         const formData = new FormData();
         formData.append("image", file);
 
-        const { data } = await axios.post(`${BASE_URL}images/`, formData);
+        const { data } = await axios.post<{ imageUrl: string }>(`${BASE_URL}images/`, formData);
         if (data) {
             message.success("Imagen subida exitosamente!");
             emit("handleEmit", data.imageUrl);
@@ -39,7 +43,7 @@ const handleCustomRequest = async ({ file }) => {
     }
 };
 
-const removeImage = async (index) => {
+const removeImage = async (index: number) => {
     const imgToDelete = props.images[index];
     const loadingMessage = message.loading("Eliminando imagen...", 0);
     try {

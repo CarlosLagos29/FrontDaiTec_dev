@@ -1,5 +1,5 @@
-<script setup>
-import { BASE_URL } from "@/GlobalState/store";
+<script setup lang="ts">
+import { BASE_URL } from "@/api/config";
 import { message } from "ant-design-vue";
 import { h } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
@@ -9,11 +9,12 @@ import axios from "axios";
 
 const { dispatch } = useStore();
 
-const { id, type, name } = defineProps({
-    id: String,
-    type: String,
-    name: String,
-});
+const { id, type, name } = defineProps<{
+    id: string;
+    // Ruta del recurso en la API: "promos", "users/profecionals", ...
+    type: string;
+    name: string;
+}>();
 
 const handleDelete = async () => {
     try {

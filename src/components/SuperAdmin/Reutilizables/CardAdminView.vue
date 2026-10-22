@@ -1,12 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { RouterLink } from "vue-router";
 import { useStore } from "vuex";
-import { BASE_URL } from "@/GlobalState/store";
+import { BASE_URL } from "@/api/config";
+import type { Product } from "@/types";
 import axios from "axios";
 
-const props = defineProps({
-    product: Object,
-});
+const props = defineProps<{
+    product: Product;
+}>();
 
 const store = useStore();
 

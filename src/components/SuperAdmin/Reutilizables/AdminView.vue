@@ -1,11 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted } from "vue";
 import { useStore } from "vuex";
+import type { Source } from "@/types";
 import CardAdminView from "./CardAdminView.vue";
 
-const props = defineProps({
-    source: String,
-});
+const props = defineProps<{
+    source: Source;
+}>();
 
 const { state, dispatch } = useStore();
 

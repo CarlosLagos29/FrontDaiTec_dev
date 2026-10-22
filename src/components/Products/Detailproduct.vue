@@ -1,22 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
-import { BASE_URL } from "@/GlobalState/store";
+import { BASE_URL } from "@/api/config";
+import type { Product } from "@/types";
 
-const idProduct = ref("");
-const product = ref({});
+const route = useRoute();
+
+// null hasta que llega del back
+const product = ref<Product | null>(null);
 const currentColor = ref("");
 
-const selectcolor = (color) => {
+const selectcolor = (color: string) => {
     currentColor.value = color;
 };
 
 onMounted(async () => {
-    const route = useRoute();
-    idProduct.value = route.params.id;
     try {
-        const { data } = await axios.get(`${BASE_URL}products/${idProduct.value}`);
+        const { data } = await axios.get<Product>(`${BASE_URL}products/${route.params.id}`);
         product.value = data;
     } catch (error) {
         console.error(error);
@@ -25,7 +26,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="flex items items-center">
+    <div v-if="product" class="flex items items-center">
         <section class="size-96 flex items-center">
             <a-carousel autoplay>
                 <span v-for="(img, index) in product.img" :key="index">

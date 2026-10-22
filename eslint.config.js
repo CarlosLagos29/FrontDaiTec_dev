@@ -19,7 +19,7 @@ export default defineConfig(
     tseslint.configs.recommended,
     pluginVue.configs["flat/recommended"],
     {
-        // Preparado para migrar a TypeScript de a poco: el <script> de los .vue puede ser JS o lang="ts"
+        // El <script lang="ts"> de los .vue lo parsea typescript-eslint
         files: ["**/*.vue"],
         languageOptions: {
             parserOptions: {
@@ -34,12 +34,14 @@ export default defineConfig(
             "@typescript-eslint/no-import-type-side-effects": "error",
             // Los componentes tienen nombres de una palabra en español (Products, Promos...): renombrarlos no aporta
             "vue/multi-word-component-names": "off",
-            // Props opcionales sin default son válidas; con la migración a TS las va a describir el tipo
+            // Props opcionales sin default son válidas: las describe el tipo (defineProps<...>())
             "vue/require-default-prop": "off",
+            // Todo el front es TypeScript: los .vue nuevos también
+            "vue/block-lang": ["error", { script: { lang: "ts" } }],
         },
     },
     {
-        files: ["*.config.js"],
+        files: ["*.config.{js,ts}"],
         languageOptions: {
             globals: globals.node,
         },

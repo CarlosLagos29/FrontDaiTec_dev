@@ -1,10 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import deleteButton from "../Reutilizables/Buttons/DeleteButton.vue";
+import type { Promo } from "@/types";
 
-defineProps({
-    promo: Object,
-    order: Number,
-});
+defineProps<{
+    promo: Promo;
+    // Posición en la lista: alterna la animación de entrada
+    order: number;
+}>();
 </script>
 
 <template>

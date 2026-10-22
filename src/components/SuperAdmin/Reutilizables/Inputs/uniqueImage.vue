@@ -1,22 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { DeleteOutlined, InboxOutlined } from "@ant-design/icons-vue";
 import { h, onUnmounted, onMounted } from "vue";
-import { BASE_URL } from "@/GlobalState/store";
+import { BASE_URL } from "@/api/config";
 import { message } from "ant-design-vue";
+import type { UploadProps } from "ant-design-vue";
 
 import axios from "axios";
 import deleteCloud from "../Functions/deleteCloud";
 
-const props = defineProps({
-    url: String,
-});
+const props = defineProps<{
+    url: string;
+}>();
 
-const emit = defineEmits(["handleCreateImg", "handleDeleteImg"]);
+const emit = defineEmits<{
+    handleCreateImg: [url: string];
+    handleDeleteImg: [];
+}>();
 
 // Imagenes subidas desde este componente: si no se guardan, se limpian de Cloudinary
-const uploadedUrls = new Set();
+const uploadedUrls = new Set<string>();
 // Imagenes ya guardadas que se quitaron del form: se borran de Cloudinary recien al guardar
-const pendingDeletes = new Set();
+const pendingDeletes = new Set<string>();
 let saved = false;
 
 const markSaved = () => {
@@ -33,7 +37,7 @@ const deleteUnsavedImage = () => {
     }
 };
 
-const handleBeforeUpload = (file) => {
+const handleBeforeUpload: NonNullable<UploadProps["beforeUpload"]> = (file) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
         message.error("Solo puedes subir archivos JPG/PNG!");
@@ -41,12 +45,12 @@ const handleBeforeUpload = (file) => {
     return isJpgOrPng;
 };
 
-const handleCustomRequest = async ({ file }) => {
+const handleCustomRequest: NonNullable<UploadProps["customRequest"]> = async ({ file }) => {
     const formData = new FormData();
     formData.append("image", file);
     const loadingMessage = message.loading("Subiendo imagen...", 0);
     try {
-        const { data } = await axios.post(`${BASE_URL}images/`, formData);
+        const { data } = await axios.post<{ imageUrl: string }>(`${BASE_URL}images/`, formData);
         if (data) {
             message.success("Imagen subida exitosamente!");
             uploadedUrls.add(data.imageUrl);

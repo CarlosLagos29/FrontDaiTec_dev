@@ -1,14 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import manyImages from "../Reutilizables/Inputs/manyImages.vue";
 import { ref } from "vue";
 
-const images = ref([]);
+const images = ref<string[]>([]);
 
-const handleEmit = (img) => {
+const handleEmit = (img: string) => {
     images.value.push(img);
 };
 
-const handleDeleteImage = (index) => {
+const handleDeleteImage = (index: number) => {
     images.value.splice(index, 1);
 };
 </script>

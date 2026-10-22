@@ -1,12 +1,10 @@
 import axios from "axios";
-import { BASE_URL } from "@/GlobalState/store";
+import { BASE_URL } from "@/api/config";
 
-const deleteCloud = async (img: string | Array<string>) => {
+const deleteCloud = async (img: string) => {
     try {
-        const imgToDelete = img as string;
-
-        if (imgToDelete.trim() !== "") {
-            await axios.delete(`${BASE_URL}images/`, { data: { imageUrl: imgToDelete } });
+        if (img.trim() !== "") {
+            await axios.delete(`${BASE_URL}images/`, { data: { imageUrl: img } });
         }
     } catch (error) {
         console.error(error);
